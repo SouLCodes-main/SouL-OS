@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My To-Dos</title>
+</head>
+<body>
+    <h1>Daily To-Dos</h1>
+    
+    <ul>
+        {% for task in tasks %}
+            <li>
+                <strong>{{ task.title }}</strong> 
+                {% if task.is_completed %}
+                    (Done)
+                {% else %}
+                    (Pending)
+                {% endif %}
+            </li>
+        {% empty %}
+            <li>All tasks done. Enjoy your day!</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
