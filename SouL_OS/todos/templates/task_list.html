@@ -8,7 +8,7 @@
     <h1>Daily To-Dos</h1>
     
     <ul>
-        {% for task in tasks %}
+        {% for task in task_table %}
             <li>
                 <strong>{{ task.title }}</strong> 
                 {% if task.is_completed %}

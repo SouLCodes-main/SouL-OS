@@ -7,5 +7,5 @@ from .models import Task
 def task_list(request):
     tasks = Task.objects.all().order_by('due_date')
 
-    context = {'tasks' : tasks}
-    return render(request, 'todos/task_list.html', context)
+    task_table = {'tasks' : tasks}
+    return render(request, 'task_list.html', task_table)
