@@ -1,37 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>My To-Dos</title>
-</head>
-<body>
-    <h1>Daily To-Dos</h1>
-    <!-- Form section -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="bg-white p-6 rounded-lg shadow-md mb-8">
+    <h2 class="text-2xl font-bold mb-4 text-gray-800">Add a New Task</h2>
     <form method="POST" action="">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Add Task</button>
+        {{ form.title }}
+        {{ form.description }}
+        <button type="submit" class="mt-4 bg-indigo-600 text-white font-bold py-2 px-4 rounded hover:bg-indigo-700 transition">
+            Add Task
+        </button>
     </form>
-    <ul>
+</div>
+
+<div class="space-y-4">
+    <h2 class="text-2xl font-bold text-gray-800">Your Tasks</h2>
+    
     {% for task in tasks %}
-        <li>
-            <strong>{{ task.title }}</strong> 
+        <div class="bg-white p-4 rounded-lg shadow flex justify-between items-center border-l-4 {% if task.is_completed %}border-green-500 opacity-75{% else %}border-indigo-500{% endif %}">
             
-            {% if task.is_completed %}
-                <span style="color: green;">(Done)</span>
-            {% else %}
-                <span style="color: orange;">(Pending)</span>
-            {% endif %}
+            <div>
+                <h3 class="text-lg font-semibold {% if task.is_completed %}line-through text-gray-500{% endif %}">
+                    {{ task.title }}
+                </h3>
+                {% if task.description %}
+                    <p class="text-gray-600 text-sm mt-1">{{ task.description }}</p>
+                {% endif %}
+            </div>
+
+            <div class="flex space-x-2">
+                <a href="{% url 'complete_task' task.id %}" 
+                   class="px-3 py-1 rounded text-sm font-semibold text-white {% if task.is_completed %}bg-yellow-500 hover:bg-yellow-600{% else %}bg-green-500 hover:bg-green-600{% endif %}">
+                    {% if task.is_completed %} Undo {% else %} Complete {% endif %}
+                </a>
+                
+                <a href="{% url 'delete_task' task.id %}" 
+                   class="px-3 py-1 rounded text-sm font-semibold text-white bg-red-500 hover:bg-red-600">
+                    Delete
+                </a>
+            </div>
             
-            <!-- Action Buttons -->
-            <a href="{% url 'complete_task' task.id %}">
-                {% if task.is_completed %} Undo {% else %} Complete {% endif %}
-            </a> | 
-            <a href="{% url 'delete_task' task.id %}" style="color: red;">Delete</a>
-        </li>
+        </div>
     {% empty %}
-        <li>No tasks yet. Enjoy your day!</li>
+        <div class="bg-gray-50 p-6 rounded text-center text-gray-500">
+            No tasks pending. Enjoy your day!
+        </div>
     {% endfor %}
-</ul>
-</body>
-</html>
+</div>
+{% endblock %}

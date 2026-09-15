@@ -1,4 +1,5 @@
 from django.shortcuts import redirect, render, get_object_or_404
+from django.http import HttpResponse
 from .models import Task
 from .forms import TaskForm
 
@@ -28,4 +29,7 @@ def delete_task(request, task_id):
     task = get_object_or_404(Task, id=task_id)
     task.delete()
     return redirect('task_list')
+
+def test_plain(request):
+    return HttpResponse('plain response ok')
 
